@@ -1,0 +1,177 @@
+<div class="h-full flex flex-col">
+  <!-- Header -->
+  <app-header class="sticky top-0 z-50 shadow-md"></app-header>
+
+  <!-- Scrollable Table -->
+  <div class="grow flex flex-col overflow-hidden">
+    <div class="flex-1 overflow-auto">
+      <table mat-table [dataSource]="coinsData" class="mat-elevation-z8 w-full">
+        <!-- ID Column -->
+        <ng-container matColumnDef="id" sticky>
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="sticky top-0 bg-white z-10"
+          >
+            ID
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="sticky top-0 bg-white z-10"
+          >
+            Name
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="symbol">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="sticky top-0 bg-white z-10"
+          >
+            Symbol
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.symbol }}</td>
+        </ng-container>
+
+        <!-- Current Price Column -->
+        <ng-container matColumnDef="current_price">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="sticky top-0 bg-white z-10"
+          >
+            Current Price
+          </th>
+          <td mat-cell *matCellDef="let element">
+            ${{ element.current_price | number : "1.2-2" }}
+          </td>
+        </ng-container>
+
+        <!-- Market Cap Column -->
+        <ng-container matColumnDef="market_cap">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="sticky top-0 bg-white z-10"
+          >
+            Market Cap
+          </th>
+          <td mat-cell *matCellDef="let element">
+            ${{ element.market_cap | number }}
+          </td>
+        </ng-container>
+
+        <!-- Total Volume Column -->
+        <ng-container matColumnDef="total_volume">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="sticky top-0 bg-white z-10"
+          >
+            Total Volume
+          </th>
+          <td mat-cell *matCellDef="let element">
+            ${{ element.total_volume | number }}
+          </td>
+        </ng-container>
+
+        <!-- High 24h Column -->
+        <ng-container matColumnDef="high_24h">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="sticky top-0 bg-white z-10"
+          >
+            High (24h)
+          </th>
+          <td mat-cell *matCellDef="let element">
+            ${{ element.high_24h | number : "1.2-2" }}
+          </td>
+        </ng-container>
+
+        <!-- Low 24h Column -->
+        <ng-container matColumnDef="low_24h">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="sticky top-0 bg-white z-10"
+          >
+            Low (24h)
+          </th>
+          <td mat-cell *matCellDef="let element">
+            ${{ element.low_24h | number : "1.2-2" }}
+          </td>
+        </ng-container>
+
+        <!-- Price Change Percentage 24h Column -->
+        <ng-container matColumnDef="price_change_percentage_24h">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="sticky top-0 bg-white z-10"
+          >
+            Price Change (24h)
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.price_change_percentage_24h | number : "1.2-2" }}%
+          </td>
+        </ng-container>
+
+        <!-- Circulating Supply Column -->
+        <ng-container matColumnDef="circulating_supply">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="sticky top-0 bg-white z-10"
+          >
+            Circulating Supply
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.circulating_supply | number }}
+          </td>
+        </ng-container>
+
+        <!-- Header and Row Definitions -->
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      @if (isLoading) {
+      <div
+        class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-20"
+      >
+        <mat-spinner diameter="50"></mat-spinner>
+      </div>
+      }
+    </div>
+
+    <!-- Paginator -->
+    <div class="bg-white">
+      <mat-paginator
+        showFirstLastButtons
+        [length]="coinsCount$ | async"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[10, 25, 50]"
+        (page)="onPageChange($event)"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+
+  <!-- Chart Footer -->
+  <div class="bg-gray-100 pt-6 px-6">
+    <h2 class="text-lg font-bold mb-4">Market Capitalization Chart - Top 10</h2>
+    <div echarts [options]="chartOptions" class="w-full h-60"></div>
+  </div>
+</div>
