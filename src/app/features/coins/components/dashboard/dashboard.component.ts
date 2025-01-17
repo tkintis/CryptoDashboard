@@ -1,31 +1,40 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { finalize, Observable } from 'rxjs';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CoinData } from '../../models/coins.model';
-import { selectCoinsCount, selectCoinsData } from '../../../../shared/store/selectors/crypto.selectors';
-import { loadCoinsCount, loadCoinsData } from '../../../../shared/store/actions/crypto.actions';
 import { AsyncPipe, DecimalPipe } from '@angular/common';
-import { HeaderComponent } from '../../../header/header.component';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Store } from '@ngrx/store';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { Observable } from 'rxjs';
 import { formatLargeNumber } from '../../../../shared/helpers/format-large-number.helper';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import { Actions, ofType } from '@ngrx/effects';
+import { loadCoinsCount, loadCoinsData } from '../../../../shared/store/actions/crypto.actions';
+import { selectCoinsCount, selectCoinsData } from '../../../../shared/store/selectors/crypto.selectors';
+import { HeaderComponent } from '../../../header/header.component';
+import { CoinData } from '../../models/coins.model';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { createFilterPredicate } from '../../../../shared/helpers/filter-predicate.helper';
+import type { EChartsOption } from 'echarts';
 
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
-    imports: [MatPaginatorModule, MatTableModule, AsyncPipe, DecimalPipe, HeaderComponent, NgxEchartsModule, MatProgressSpinnerModule],
+    imports: [MatPaginatorModule, MatTableModule, AsyncPipe, DecimalPipe, HeaderComponent, NgxEchartsModule, MatProgressSpinnerModule, MatSortModule, MatInputModule, MatFormFieldModule, FormsModule, MatIconModule, MatMenuModule, MatButtonModule],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
     @ViewChild(MatPaginator) paginator!: MatPaginator;
+    @ViewChild(MatSort) sort!: MatSort;
 
     coinsCount$: Observable<number>;
     coinsData$: Observable<CoinData[]>;
-    coinsData: MatTableDataSource<CoinData> = new MatTableDataSource<CoinData>([]);
+    coinsData: WritableSignal<MatTableDataSource<CoinData, MatPaginator>> = signal<MatTableDataSource<CoinData>>(new MatTableDataSource<CoinData>([]));
 
     displayedColumns: string[] = [
         'id',
@@ -39,19 +48,22 @@ export class DashboardComponent implements OnInit {
         'price_change_percentage_24h',
         'circulating_supply',
     ];
-    pageSize: number = 10;
+    pageSize: WritableSignal<number> = signal(10);
     pageNumber: number = 1;
     chartInitialized: boolean = false;
-    chartOptions: any;
-    isLoading: boolean = false;
+    chartOptions: WritableSignal<EChartsOption> = signal<EChartsOption>({});
+    isLoading: WritableSignal<boolean> = signal(false);
+    filterValues: { [key: string]: string } = {};
+    globalFilter: string = '';
 
-  //#region Refs
-  private destroyRef: DestroyRef = inject(DestroyRef);
-  private cd: ChangeDetectorRef = inject(ChangeDetectorRef);
-  //#endregion
-  private actions$: Actions = inject(Actions);
+    //#region Refs
+    private destroyRef: DestroyRef = inject(DestroyRef);
+    private cd: ChangeDetectorRef = inject(ChangeDetectorRef);
+    //#endregion
 
-    constructor(private store: Store) {
+    private store: Store = inject(Store);
+
+    constructor() {
         this.coinsCount$ = this.store.select(selectCoinsCount);
         this.coinsData$ = this.store.select(selectCoinsData);
     }
@@ -61,35 +73,64 @@ export class DashboardComponent implements OnInit {
         this.nextPage();
 
         this.coinsData$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((data) => {
-            this.coinsData.data = data;
-            this.isLoading = false;
+            this.coinsData().data = data;
+            this.isLoading.set(false);
+            this.cd.markForCheck();
 
-             // Only initialize chart the first time
-             if (!this.chartInitialized && data.length > 0) {
-                const topCryptos = data.slice(0, 10); // Ensure only top 10 are considered
-                this.prepareChart(topCryptos);
-                this.chartInitialized = true;
-                this.cd.markForCheck();
-            }
+            this.coinsData().filterPredicate = createFilterPredicate<CoinData>();
+
+            this.populateTopCryptos(data);
         });
     }
 
+    ngAfterViewInit(): void {
+        this.coinsData().sort = this.sort;
+        this.cd.markForCheck();
+    }
+
+    populateTopCryptos(data: CoinData[]) {
+        if (!this.chartInitialized && data.length > 0) {
+            const topCryptos = data.slice(0, 10); // Ensure only top 10 are considered
+            this.prepareChart(topCryptos);
+            this.chartInitialized = true;
+            this.cd.markForCheck();
+        }
+    }
 
     nextPage(): void {
-        this.isLoading = true;
+        this.isLoading.set(true);
         this.store.dispatch(
-            loadCoinsData({ pageSize: this.pageSize, pageNumber: this.pageNumber })
+            loadCoinsData({ pageSize: this.pageSize(), pageNumber: this.pageNumber })
         );
     }
 
     onPageChange(event: PageEvent): void {
-        this.pageSize = event.pageSize;
+        this.pageSize.set(event.pageSize);
         this.pageNumber = event.pageIndex + 1;
         this.nextPage();
     }
 
+    applyColumnFilter(event: Event, column: string): void {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.filterValues[column] = filterValue;
+        this.applyCombinedFilters();
+    }
+
+    applyGlobalFilter(event: Event): void {
+        const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+        this.globalFilter = filterValue;
+        this.applyCombinedFilters();
+    }
+
+    applyCombinedFilters(): void {
+        this.coinsData().filter = JSON.stringify({
+            columnFilters: this.filterValues,
+            globalFilter: this.globalFilter,
+        });
+    }
+
     prepareChart(data: CoinData[]): void {
-        this.chartOptions = {
+        this.chartOptions.set({
             tooltip: {
                 trigger: 'item',
                 formatter: (params: any) => {
@@ -108,7 +149,7 @@ export class DashboardComponent implements OnInit {
             },
             xAxis: {
                 type: 'category',
-                data: data.map((coin) => coin.name),
+                data: data.map((coin) => coin.symbol.toUpperCase()),
             },
             yAxis: {
                 type: 'value',
@@ -116,7 +157,14 @@ export class DashboardComponent implements OnInit {
                 axisLabel: {
                     formatter: formatLargeNumber
                 },
-    
+
+            },
+            grid: {
+                left: '0%',
+                right: '0%',
+                top: '20%',
+                bottom: '5%',
+                containLabel: true,
             },
             series: [
                 {
@@ -124,10 +172,10 @@ export class DashboardComponent implements OnInit {
                     type: 'bar',
                     itemStyle: {
                         color: 'rgb(2,17,71)',
-                      },
+                    },
                 },
             ],
-        };
+        })
     }
 
 }

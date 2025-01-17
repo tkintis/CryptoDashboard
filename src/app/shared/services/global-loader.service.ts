@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
+// in case we want a global loader this service could be used.
 export class GlobalLoaderService {
     private loaderVisibleSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
     isGlobalLoaderVisible$ = this.loaderVisibleSubject.asObservable();

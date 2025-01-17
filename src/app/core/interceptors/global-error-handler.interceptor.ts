@@ -11,11 +11,12 @@ export function globalErrorHandlerInterceptor(req: HttpRequest<unknown>, next: H
     return next(req).pipe(
         catchError((errorResponse: HttpErrorResponse) => {
             if (errorResponse instanceof HttpErrorResponse) {
+                console.log('errorResponse', errorResponse);
                 const title: string = `Error: ${errorResponse.status}`;
                 const message: string = errorResponse.message;
 
                 loggingService.error(title, message);
-                toastService.error(title + ' - ' + message);
+                toastService.error('Error fetching data. Please try again later');
             } else {
                 // Handle non-HTTP errors
                 toastService.error('An error occurred');
