@@ -1,15 +1,15 @@
+import { environment } from "../../../../environments/environment";
 import { CoinData } from "../../../features/coins/models/coins.model";
+import { Currency } from "../../enums/currency.enum";
 
 export interface CryptoState {
-  coinsCount: number;
   coinsData: CoinData[];
-  loading: boolean; 
-  error: string | null;
+  coinsCount: number;
+  currency: Currency;
 }
 
 export const initialState: CryptoState = {
-  coinsCount: 0,
   coinsData: [],
-  loading: false,
-  error: null,
+  coinsCount: 0,
+  currency: environment.defaultCurrency,
 };

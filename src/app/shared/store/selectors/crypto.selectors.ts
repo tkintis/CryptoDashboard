@@ -12,3 +12,8 @@ export const selectCoinsData = createSelector(
   selectCryptoState,
   (state) => state.coinsData
 );
+
+export const selectCurrency = createSelector(
+  selectCryptoState,
+  (state) => state.currency
+);

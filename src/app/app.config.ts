@@ -12,6 +12,8 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { NGX_ECHARTS_CONFIG } from 'ngx-echarts';
 import * as echarts from 'echarts';
 import { globalErrorHandlerInterceptor } from './core/interceptors/global-error-handler.interceptor';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { provideClientHydration } from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -32,6 +34,12 @@ export const appConfig: ApplicationConfig = {
       provide: NGX_ECHARTS_CONFIG,
       useValue: { echarts }, // Configure ECharts globally
     },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        subscriptSizing: 'dynamic'
+      }
+    }
   ]
   
 };

@@ -1,4 +1,7 @@
+import { Currency } from "../app/shared/enums/currency.enum";
+
 export const environment = {
     production: false,
-    apiUrl: 'https://api.coingecko.com/api' // Replace with your development API URL
+    apiUrl: 'https://api.coingecko.com/api',
+    defaultCurrency: Currency.usd
   };

@@ -11,7 +11,6 @@ export function globalErrorHandlerInterceptor(req: HttpRequest<unknown>, next: H
     return next(req).pipe(
         catchError((errorResponse: HttpErrorResponse) => {
             if (errorResponse instanceof HttpErrorResponse) {
-                console.log('errorResponse', errorResponse);
                 const title: string = `Error: ${errorResponse.status}`;
                 const message: string = errorResponse.message;
 

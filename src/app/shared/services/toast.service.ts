@@ -9,7 +9,7 @@ import {
     providedIn: 'root'
 })
 export class ToastService {
-    private readonly duration = 99000;
+    private readonly duration = 8000;
     private readonly horizontalPosition: MatSnackBarHorizontalPosition = 'end';
     private readonly verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 

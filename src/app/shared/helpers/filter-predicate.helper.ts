@@ -2,7 +2,7 @@ export function createFilterPredicate<T>() {
     return (data: T, filter: string): boolean => {
 
         const { columnFilters, globalFilter } = JSON.parse(filter);
-console.log('globalFilter', globalFilter);
+
         // Check column-specific filters
         for (const key in columnFilters) {
             if (columnFilters[key]) {

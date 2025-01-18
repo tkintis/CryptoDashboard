@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,7 +10,17 @@ body {
     margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; 
 }
 
+.dense-2 {
+    @include mat.all-component-densities(-5);
+}
 
+.mat-mdc-paginator-range-actions .mat-mdc-paginator-range-label {
+    margin: 0 15px 0 15px;
+}
+
+.mat-mdc-paginator-page-size-label {
+    display: none;
+}
 
 // #region snackbar 
 
@@ -22,3 +33,13 @@ body {
 }
 
 // #endregion
+
+// #region responsive
+@media (max-width: 768px) {
+    table {
+      font-size: 0.75rem; /* Even smaller font for very small screens */
+    }
+    th, td {
+      padding: 0.25rem;
+    }
+  }

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { Coin, CoinData } from '../models/coins.model';
+import { Currency } from '../../../shared/enums/currency.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class CoinsService {
     return this.http.get<Coin[]>(this.coinsListUrl);
   }
 
-  getCoinsMarkets(pageSize: number, pageNumber: number): Observable<CoinData[]> {
-    return this.http.get<any[]>(`${this.coinsMarketsUrl}?vs_currency=usd&order=market_%20cap_desc&per_page=${pageSize}&page=${pageNumber}&sparkline=false`);
+  getCoinsMarkets(pageSize: number, pageNumber: number, order: string = 'market_cap_desc', currency: Currency = environment.defaultCurrency): Observable<CoinData[]> {
+    return this.http.get<any[]>(`${this.coinsMarketsUrl}?vs_currency=${currency}&order=${order}&per_page=${pageSize}&page=${pageNumber}&sparkline=false`);
   }
 }

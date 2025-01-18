@@ -26,8 +26,8 @@ export class CryptoEffects {
   loadCoinsData$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadCoinsData),
-      mergeMap(({ pageSize, pageNumber }) =>
-        this.coinsService.getCoinsMarkets(pageSize, pageNumber).pipe(
+      mergeMap(({ pageSize, pageNumber, order, currency }) =>
+        this.coinsService.getCoinsMarkets(pageSize, pageNumber, order, currency).pipe(
           map((data) => setCoinsData({ data })),
           catchError(() => {
             return of(setCoinsData({ data: [] })); 
