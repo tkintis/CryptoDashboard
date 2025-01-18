@@ -263,8 +263,8 @@
     <div class="bg-white">
       <mat-paginator
         [length]="coinsCount$ | async"
-        [pageSize]="pageSize"
-        [pageSizeOptions]="[10, 25, 50]"
+        [pageSize]="pageSize()"
+        [pageSizeOptions]="pageSizeOptions()"
         (page)="onPageChange($event)"
       >
       </mat-paginator>

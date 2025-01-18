@@ -20,7 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { createFilterPredicate } from '../../../../shared/helpers/filter-predicate.helper';
-import type { EChartsOption } from 'echarts';
+import { env, type EChartsOption } from 'echarts';
 import { Currency } from '../../../../shared/enums/currency.enum';
 import { CURRENCY_CONFIG } from '../../../../shared/config/currency.config';
 import { environment } from '../../../../../environments/environment';
@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     coinsData$: Observable<CoinData[]>;
     coinsData: WritableSignal<MatTableDataSource<CoinData, MatPaginator>> = signal<MatTableDataSource<CoinData>>(new MatTableDataSource<CoinData>([]));
 
+    pageSizeOptions: WritableSignal<number[]> = signal(environment.pageSizeOptions);
     displayedColumns: string[] = [
         'id',
         'name',
