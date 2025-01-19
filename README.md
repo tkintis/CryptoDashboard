@@ -33,6 +33,7 @@ b. *npm run cy:run* To run Cypress Tests in Headless Mode
 
 ### 1. Core
 **Interceptors:**
+
 *global-error-handler.interceptor.ts:* Centralizes error handling for API calls.
 
 ### 2. Shared
