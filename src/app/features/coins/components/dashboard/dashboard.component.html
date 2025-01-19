@@ -1,11 +1,7 @@
 <div class="h-full flex flex-col">
   <app-header class="sticky top-0 z-50 shadow-md" [title]="'Dashboard'">
     <div class="block sm:hidden">
-      <button
-        mat-icon-button
-        [matMenuTriggerFor]="tableSearchMenu"
-        aria-label="Open Table Search"
-      >
+      <button mat-icon-button [matMenuTriggerFor]="tableSearchMenu" aria-label="Open Table Search">
         <mat-icon class="text-white">search</mat-icon>
       </button>
       <mat-menu #tableSearchMenu="matMenu">
@@ -22,48 +18,22 @@
 
   <div class="grow flex flex-col overflow-hidden">
     <div class="flex-1 overflow-auto relative">
-      <table
-        mat-table
-        [dataSource]="coinsData()"
-        matSort
-        class="mat-elevation-z8 w-full"
-      >
+      <table id="crypto-table" mat-table [dataSource]="coinsData()" matSort class="mat-elevation-z8 w-full">
         <!-- ID Column -->
         <ng-container matColumnDef="id">
-          <th
-            mat-header-cell
-            mat-sort-header
-            *matHeaderCellDef
-            class="sticky top-0 bg-white z-10"
-          >
-            ID
-          </th>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef class="sticky top-0 bg-white z-10">ID</th>
           <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="name" sticky>
-          <th
-            mat-header-cell
-            mat-sort-header
-            *matHeaderCellDef
-            class="sticky top-0 bg-white z-10"
-          >
+          <th mat-header-cell mat-sort-header *matHeaderCellDef class="sticky top-0 bg-white z-10">
             Name
-            <button
-              mat-icon-button
-              class="ml-2"
-              [matMenuTriggerFor]="nameFilterMenu"
-              aria-label="Filter Name"
-              (click)="$event.stopPropagation()"
-            >
+            <button mat-icon-button class="ml-2" [matMenuTriggerFor]="nameFilterMenu" aria-label="Filter Name" (click)="$event.stopPropagation()">
               <mat-icon>filter_alt</mat-icon>
             </button>
             <mat-menu #nameFilterMenu="matMenu">
-              <mat-form-field
-                class="w-full px-5"
-                (click)="$event.stopPropagation()"
-              >
+              <mat-form-field class="w-full px-5" (click)="$event.stopPropagation()">
                 <mat-label>Filter Name</mat-label>
                 <mat-icon matSuffix>search</mat-icon>
                 <input matInput (keyup)="applyColumnFilter($event, 'name')" />
@@ -75,27 +45,13 @@
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="symbol">
-          <th
-            mat-header-cell
-            mat-sort-header
-            *matHeaderCellDef
-            class="sticky top-0 bg-white z-10"
-          >
+          <th mat-header-cell mat-sort-header *matHeaderCellDef class="sticky top-0 bg-white z-10">
             Symbol
-            <button
-              mat-icon-button
-              class="ml-2"
-              [matMenuTriggerFor]="symbolFilterMenu"
-              aria-label="Filter Symbol"
-              (click)="$event.stopPropagation()"
-            >
+            <button mat-icon-button class="ml-2" [matMenuTriggerFor]="symbolFilterMenu" aria-label="Filter Symbol" (click)="$event.stopPropagation()">
               <mat-icon>filter_alt</mat-icon>
             </button>
             <mat-menu #symbolFilterMenu="matMenu">
-              <mat-form-field
-                class="w-full px-5"
-                (click)="$event.stopPropagation()"
-              >
+              <mat-form-field class="w-full px-5" (click)="$event.stopPropagation()">
                 <mat-label>Filter Symbol</mat-label>
                 <mat-icon matSuffix>search</mat-icon>
                 <input matInput (keyup)="applyColumnFilter($event, 'symbol')" />
@@ -107,27 +63,15 @@
 
         <!-- Current Price Column -->
         <ng-container matColumnDef="current_price">
-          <th
-            mat-header-cell
-            mat-sort-header
-            *matHeaderCellDef
-            class="sticky top-0 bg-white z-10"
-          >
-            Current Price
-          </th>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef class="sticky top-0 bg-white z-10">Current Price</th>
           <td mat-cell *matCellDef="let element">
-            {{ selectedCurrencySymbol }}{{ element.current_price | number : "1.2-2": selectedCurrencyLocale }}
+            {{ selectedCurrencySymbol }}{{ element.current_price | number : "1.2-2" : selectedCurrencyLocale }}
           </td>
         </ng-container>
 
         <!-- Market Cap Column -->
         <ng-container matColumnDef="market_cap">
-          <th
-            mat-header-cell
-            mat-sort-header
-            *matHeaderCellDef
-            class="sticky top-0 bg-white z-10"
-          >
+          <th mat-header-cell mat-sort-header *matHeaderCellDef class="sticky top-0 bg-white z-10">
             Market Cap
             <button
               mat-icon-button
@@ -139,142 +83,75 @@
               <mat-icon>filter_alt</mat-icon>
             </button>
             <mat-menu #marketCapFilterMenu="matMenu">
-              <mat-form-field
-                class="w-full px-5"
-                (click)="$event.stopPropagation()"
-              >
+              <mat-form-field class="w-full px-5" (click)="$event.stopPropagation()">
                 <mat-label>Filter Market Cap</mat-label>
                 <mat-icon matSuffix>search</mat-icon>
-                <input
-                  matInput
-                  (keyup)="applyColumnFilter($event, 'market_cap')"
-                />
+                <input matInput (keyup)="applyColumnFilter($event, 'market_cap')" />
               </mat-form-field>
             </mat-menu>
           </th>
-          <td mat-cell *matCellDef="let element">
-            {{ selectedCurrencySymbol }}{{ element.market_cap | number : '1.0-0' : selectedCurrencyLocale }}
-          </td>
+          <td mat-cell *matCellDef="let element">{{ selectedCurrencySymbol }}{{ element.market_cap | number : "1.0-0" : selectedCurrencyLocale }}</td>
         </ng-container>
 
         <!-- Total Volume Column -->
         <ng-container matColumnDef="total_volume">
-          <th
-            mat-header-cell
-            mat-sort-header
-            *matHeaderCellDef
-            class="sticky top-0 bg-white z-10"
-          >
-            Total Volume
-          </th>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef class="sticky top-0 bg-white z-10">Total Volume</th>
           <td mat-cell *matCellDef="let element">
-            {{ selectedCurrencySymbol }}{{ element.total_volume | number: '1.0-0' : selectedCurrencyLocale }}
+            {{ selectedCurrencySymbol }}{{ element.total_volume | number : "1.0-0" : selectedCurrencyLocale }}
           </td>
         </ng-container>
 
         <!-- High 24h Column -->
         <ng-container matColumnDef="high_24h">
-          <th
-            mat-header-cell
-            mat-sort-header
-            *matHeaderCellDef
-            class="sticky top-0 bg-white z-10"
-          >
-            High (24h)
-          </th>
-          <td mat-cell *matCellDef="let element">
-            {{ selectedCurrencySymbol }}{{ element.high_24h | number : '1.2-2': selectedCurrencyLocale }}
-          </td>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef class="sticky top-0 bg-white z-10">High (24h)</th>
+          <td mat-cell *matCellDef="let element">{{ selectedCurrencySymbol }}{{ element.high_24h | number : "1.2-2" : selectedCurrencyLocale }}</td>
         </ng-container>
 
         <!-- Low 24h Column -->
         <ng-container matColumnDef="low_24h">
-          <th
-            mat-header-cell
-            mat-sort-header
-            *matHeaderCellDef
-            class="sticky top-0 bg-white z-10"
-          >
-            Low (24h)
-          </th>
-          <td mat-cell *matCellDef="let element">
-            {{ selectedCurrencySymbol }}{{ element.low_24h | number : '1.2-2': selectedCurrencyLocale }}
-          </td>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef class="sticky top-0 bg-white z-10">Low (24h)</th>
+          <td mat-cell *matCellDef="let element">{{ selectedCurrencySymbol }}{{ element.low_24h | number : "1.2-2" : selectedCurrencyLocale }}</td>
         </ng-container>
 
         <!-- Price Change Percentage 24h Column -->
         <ng-container matColumnDef="price_change_percentage_24h">
-          <th
-            mat-header-cell
-            mat-sort-header
-            *matHeaderCellDef
-            class="sticky top-0 bg-white z-10"
-          >
-            Price Change (24h)
-          </th>
-          <td mat-cell *matCellDef="let element">
-            {{ element.price_change_percentage_24h | number : '1.2-2' }}%
-          </td>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef class="sticky top-0 bg-white z-10">Price Change (24h)</th>
+          <td mat-cell *matCellDef="let element">{{ element.price_change_percentage_24h | number : "1.2-2" }}%</td>
         </ng-container>
 
         <!-- Circulating Supply Column -->
         <ng-container matColumnDef="circulating_supply">
-          <th
-            mat-header-cell
-            mat-sort-header
-            *matHeaderCellDef
-            class="sticky top-0 bg-white z-10"
-          >
-            Circulating Supply
-          </th>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef class="sticky top-0 bg-white z-10">Circulating Supply</th>
           <td mat-cell *matCellDef="let element">
             {{ element.circulating_supply | number }}
           </td>
         </ng-container>
 
         <!-- Header and Row Definitions -->
-        <tr
-          mat-header-row
-          *matHeaderRowDef="displayedColumns; sticky: true"
-        ></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          class="!h-9 sm:!h-11"
-        ></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" class="!h-9 sm:!h-11"></tr>
       </table>
 
       @if (isLoading()) {
-      <div
-        class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-20"
-      >
+      <div class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-20">
         <mat-spinner diameter="50"></mat-spinner>
       </div>
       } @else if(coinsData().data.length === 0) {
-      <div
-        class="absolute inset-0 flex items-center justify-center text-gray-500 text-lg pointer-events-none"
-      >
-        No data available
-      </div>
+      <div class="absolute inset-0 flex items-center justify-center text-gray-500 text-lg pointer-events-none">No data available</div>
       }
     </div>
 
     <!-- Paginator -->
     <div class="bg-white">
-      <mat-paginator
-        [length]="coinsCount$ | async"
-        [pageSize]="pageSize()"
-        [pageSizeOptions]="pageSizeOptions()"
-        (page)="onPageChange($event)"
-      >
+      <mat-paginator [length]="coinsCount$ | async" [pageSize]="pageSize()" [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)">
       </mat-paginator>
     </div>
   </div>
 
   <!-- Chart Footer -->
   <div class="bg-gray-100 pt-4 px-4">
-    <h2 class="text-lg font-bold">Market Capitalization - Top 10</h2>
-    <div echarts [options]="chartOptions()" class="w-full h-40 md:h-60"></div>
+    <h2 class="text-lg font-bold">Market Capitalization - Top {{ topCryptosNumber() }}</h2>
+    <div echarts id="crypto-chart" [options]="chartOptions()" class="w-full h-40 md:h-60"></div>
   </div>
 </div>
 
@@ -282,20 +159,9 @@
   <mat-form-field class="dense-2 w-full">
     <mat-label>Table Search</mat-label>
     <mat-icon matPrefix>search</mat-icon>
-    <input
-      matInput
-      placeholder="Search Table"
-      class="w-full"
-      [(ngModel)]="globalFilter"
-      (keyup)="applyGlobalFilter($event)"
-    />
+    <input matInput placeholder="Search Table" class="w-full" [(ngModel)]="globalFilter" (keyup)="applyGlobalFilter($event)" />
     @if (globalFilter !== '') {
-    <button
-      mat-icon-button
-      matSuffix
-      aria-label="Clear"
-      (click)="clearGlobalFilter()"
-    >
+    <button id="clear-icon" mat-icon-button matSuffix aria-label="Clear" (click)="clearGlobalFilter()">
       <mat-icon>close</mat-icon>
     </button>
     }

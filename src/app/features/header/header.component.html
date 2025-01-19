@@ -1,13 +1,13 @@
 <header class="flex items-center justify-between bg-[rgb(2,17,71)] shadow-md">
   <!-- Logo -->
   <div class="flex items-center gap-x-1.5">
-    <img src="logo.png" alt="Logo" width="100" />
+    <img id="logo" ngSrc="logo.png" alt="Logo" width="100" height="52"/>
     <span class="text-white text-xl">{{ title() }}</span>
   </div>
   <div class="flex items-center gap-x-2.5">
     <div class="flex flex-col sm:flex-row items-center gap-x-1.5">
       @for(currency of currencies; track $index) {
-      <a class="text-white cursor-pointer" (click)="onCurrencyChange(currency)" [class.text-yellow-300]="selectedCurrency === currency">
+      <a id="{{currency}}" class="text-white cursor-pointer" (click)="onCurrencyChange(currency)" [class.text-yellow-300]="selectedCurrency === currency">
         {{ currency.toUpperCase() }}
       </a>
       }

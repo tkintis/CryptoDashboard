@@ -1,59 +1,116 @@
-# CryptoMetrics
+# CryptoMetrics Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.4.
+This is a crypto dashboard application that displays market data for various cryptocurrencies, with features such as global search, column filtering, sorting, currency toggling, and interactive charts.
 
-## Development server
+## Installation and Running Instructions
+### 1. Installation
+Ensure you have latest Node.js and npm installed on your system (Project is in Angular 19). 
 
-To start a local development server, run:
+Then, run the following command in the project directory: *npm install*
 
-```bash
-ng serve
-```
+### 2. Running the Application
+To start the app locally, run: *npm start* or *ng serve*
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### 3. Running Cypress Tests
+a. *npm run cy:open* To open Cypress in Interactive Mode
 
-## Code scaffolding
+b. *npm run cy:run* To run Cypress Tests in Headless Mode
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Folder Structure
+**CORE:** Contains functionality central to the application, such as interceptors and global error handling.
 
-```bash
-ng generate component component-name
-```
+**SHARED:** Houses reusable utilities, services, enums, and helpers that are shared across the application.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+**FEATURES:** Contains feature-specific components, services, models, and routing.
 
-```bash
-ng generate --help
-```
+## Folder and File Descriptions
 
-## Building
+### 1. Core
+**Interceptors:**
+*global-error-handler.interceptor.ts:* Centralizes error handling for API calls.
 
-To build the project run:
+### 2. Shared
 
-```bash
-ng build
-```
+**Config:**
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+*currency.config.ts:* Defines configuration for currency symbols and locales.
 
-## Running unit tests
+**Enums:**
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+*currency.enum.ts:* Enumerates supported currencies like USD and EUR.
 
-```bash
-ng test
-```
+**Helpers:**
 
-## Running end-to-end tests
+*filter-predicate.helper.ts:* Provides reusable filtering logic for Angular Material tables.
 
-For end-to-end (e2e) testing, run:
+*format-large-number.helper.ts:* Formats large numbers for display, e.g., market caps and prices.
 
-```bash
-ng e2e
-```
+**Services:**
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+*logging.service.ts:* Centralized logging for debugging and error reporting.
 
-## Additional Resources
+*navigation.service.ts:* Simplifies navigation across routes and is a common place for common functionality concerning navigation.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+*toast.service.ts:* Provides toast notifications for user feedback.
+
+### 3. Features
+
+**Components:**
+
+*dashboard.component.ts:* Displays cryptocurrency market data in a table with features like search, sorting, filtering, and currency toggle. Includes a market capitalization chart for the top 10 cryptocurrencies.
+
+*header.component.ts:* Contains the app's header with a currency toggle dropdown and branding.
+
+**Models:**
+
+*coins.model.ts:* Defines data structures for cryptocurrency information.
+
+**Services:**
+
+*coins.service.ts:* Manages API calls to fetch cryptocurrency data and metadata.
+
+**Routes:**
+
+*coins.routes.ts:* Configures lazy-loaded routing for the coins dashboard.
+
+## Key Features and Decisions
+
+### Framework: 
+
+The application is implemented using Angular 19 to leverage its robust framework and high-performance capabilities.
+
+### UI Library: 
+
+Material Design components are used for the table, paginator, menus, and buttons, ensuring a clean and accessible UI.
+
+### Styling: 
+
+TailwindCSS is integrated for utility-first styling, allowing for rapid and responsive UI development.
+
+### State Management: 
+
+NgRx is used for managing application state, including currency selection and cryptocurrency data.
+
+### Lazy Loading:
+
+Used lazy loading for components to enhance performance.
+
+### Optimized Images:
+
+Leveraged ngSrc with NgOptimizedImage to ensure efficient image handling and performance.
+
+### Sorting and Filtering:
+
+Implemented column-based filtering and sorting using Angular Material, which interact with the backend for real-time data updates.
+
+### Charting:
+
+ECharts is used for rendering the market capitalization chart, providing rich interactivity and customization.
+
+### Change Detection:
+
+Utilizes ChangeDetectionStrategy.OnPush to improve performance by minimizing unnecessary re-renders.
+
+### Signals:
+
+Used Angular Signals where appropriate, because are fast for best of performance in the DOM.

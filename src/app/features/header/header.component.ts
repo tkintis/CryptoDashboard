@@ -1,21 +1,21 @@
-import { ChangeDetectionStrategy, Component, inject, input } from "@angular/core";
-import { MatButtonModule } from "@angular/material/button";
+import { NgOptimizedImage } from "@angular/common";
+import { ChangeDetectionStrategy, Component, inject, input, InputSignal } from "@angular/core";
 import { Store } from "@ngrx/store";
+import { environment } from "../../../environments/environment";
 import { Currency } from "../../shared/enums/currency.enum";
 import { setCurrency } from "../../shared/store/actions/crypto.actions";
 import { selectCurrency } from "../../shared/store/selectors/crypto.selectors";
-import { environment } from "../../../environments/environment";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  imports: [MatButtonModule],
+  imports: [NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
-  title = input.required();
+  title: InputSignal<string> = input.required<string>();
 
-  currencies = [Currency.usd, Currency.eur];
+  currencies: Currency[] = [Currency.usd, Currency.eur];
   selectedCurrency: Currency = environment.defaultCurrency;
 
   private store: Store = inject(Store);

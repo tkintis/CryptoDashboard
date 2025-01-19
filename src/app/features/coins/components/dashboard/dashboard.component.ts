@@ -32,9 +32,12 @@ import { environment } from '../../../../../environments/environment';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
+    //#region viewChild
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild(MatSort) sort!: MatSort;
+    //#endregion
 
+    //#region variables
     coinsCount$: Observable<number>;
     coinsData$: Observable<CoinData[]>;
     coinsData: WritableSignal<MatTableDataSource<CoinData, MatPaginator>> = signal<MatTableDataSource<CoinData>>(new MatTableDataSource<CoinData>([]));
@@ -59,11 +62,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     filterValues: { [key: string]: string } = {};
     globalFilter: string = '';
     topCryptos: CoinData[] = [];
+    topCryptosNumber: WritableSignal<number> = signal(environment.topCryptosNumber);
     sortOrder!: string;
     selectedCurrency: Currency = environment.defaultCurrency;
     selectedCurrencySymbol: string = CURRENCY_CONFIG[environment.defaultCurrency].symbol;
     selectedCurrencyLocale: string = CURRENCY_CONFIG[environment.defaultCurrency].locale;
     selectedCurrencyChanged: boolean = false;
+
+    //#endregion
 
     //#region Refs
     private destroyRef: DestroyRef = inject(DestroyRef);
@@ -132,7 +138,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         }
 
         if (this.topCryptos.length > 0) {
-            const topCryptos = this.topCryptos.slice(0, 10); // Ensure only top 10 are considered
+            const topCryptos = this.topCryptos.slice(0, this.topCryptosNumber()); // Ensure only top 10 are considered
             this.prepareChart(topCryptos);
             this.cd.markForCheck();
         }
