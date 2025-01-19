@@ -6,10 +6,16 @@ This is a crypto dashboard application that displays market data for various cry
 ### 1. Installation
 Ensure you have latest Node.js and npm installed on your system (Project is in Angular 19). 
 
-Then, run the following command in the project directory: *npm install*
+After that follow these steps:
+
+a. Clone the repository: *git clone https://github.com/tkintis/CryptoDashboard*
+
+b. Navigate into the project directory: *cd CryptoDashboard*
+
+c. Install dependencies: *npm install*
 
 ### 2. Running the Application
-To start the app locally, run: *npm start* or *ng serve*
+To start the app locally, run: *npm start*
 
 ### 3. Running Cypress Tests
 a. *npm run cy:open* To open Cypress in Interactive Mode
@@ -93,7 +99,7 @@ NgRx is used for managing application state, including currency selection and cr
 
 ### Lazy Loading:
 
-Used lazy loading for components to enhance performance.
+Used lazy loading for components, to make sure lazy-loaded files are not included in the initial files, to enhance performance.
 
 ### Optimized Images:
 
