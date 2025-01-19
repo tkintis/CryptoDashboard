@@ -126,7 +126,7 @@ Used Angular Signals where appropriate, because are fast for best of performance
 
 **Environments:**
 
-*environment.ts:* The environment.ts file contains key application configuration values, allowing seamless customization for different environments (e.g., development, production). In addition to the default environment.ts, the project includes an environment.prod.ts file for production builds. Below are the key fields in the environment.ts file:
+*environment.ts:* It contains key application configuration values, allowing seamless customization for different environments (e.g., development, production). In addition to the default environment.ts, the project includes an environment.prod.ts file for production builds. Below are the key fields in the environment.ts file:
 
 a. *production:* Indicates whether the app is running in production mode.
 
