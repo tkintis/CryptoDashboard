@@ -8,7 +8,7 @@ Ensure you have latest Node.js and npm installed on your system (Project is in A
 
 After that follow these steps:
 
-a. Clone the repository: *git clone https://github.com/tkintis/CryptoDashboard*
+a. Clone the repository: *git clone https://github.com/tkintis/CryptoDashboard.git*
 
 b. Navigate into the project directory: *cd CryptoDashboard*
 
