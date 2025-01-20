@@ -43,8 +43,7 @@ describe('Dashboard Page', () => {
     //#region check error handling
     cy.get('.mat-mdc-paginator-navigation-next').click();
     cy.get('.mat-mdc-paginator-navigation-next').click();
-    cy.wait('@apiCall');
-    cy.wait(1000);
+    cy.wait(3000);
     cy.get('simple-snack-bar').should('be.visible'); // check visibility of notification message
     //#endregion
   });
