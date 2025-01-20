@@ -18,9 +18,7 @@ c. Install dependencies: *npm install*
 To start the app locally, run: *npm start*
 
 ### 3. Running Cypress Tests
-a. *npm run cy:open* To open Cypress in Interactive Mode
-
-b. *npm run cy:run* To run Cypress Tests in Headless Mode
+*npm run cy:open* To open Cypress in Interactive Mode
 
 ## Folder Structure
 **CORE:** Contains functionality central to the application, such as interceptors and global error handling.
@@ -80,6 +78,22 @@ b. *npm run cy:run* To run Cypress Tests in Headless Mode
 
 *coins.routes.ts:* Configures lazy-loaded routing for the coins dashboard.
 
+### 4. Configuration Files
+
+**Environments:**
+
+*environment.ts:* It contains key application configuration values, allowing seamless customization for different environments (e.g., development, production). In addition to the default environment.ts, the project includes an environment.prod.ts file for production builds. Below are the key fields in the environment.ts file:
+
+a. *production:* Indicates whether the app is running in production mode.
+
+b. *apiUrl:* The base URL for the application's API.
+
+c. *defaultCurrency:* Specifies the default currency for displaying cryptocurrency data.
+
+d. *pageSizeOptions:* Defines the pagination options available for the application.
+
+e. *topCryptosNumber:* Determines the number of top cryptocurrencies displayed in the chart.
+
 ## Key Features and Decisions
 
 ### Framework: 
@@ -121,19 +135,3 @@ Utilizes ChangeDetectionStrategy.OnPush to improve performance by minimizing unn
 ### Signals:
 
 Used Angular Signals where appropriate, because are fast for best of performance in the DOM.
-
-### 4. Configuration Files
-
-**Environments:**
-
-*environment.ts:* It contains key application configuration values, allowing seamless customization for different environments (e.g., development, production). In addition to the default environment.ts, the project includes an environment.prod.ts file for production builds. Below are the key fields in the environment.ts file:
-
-a. *production:* Indicates whether the app is running in production mode.
-
-b. *apiUrl:* The base URL for the application's API.
-
-c. *defaultCurrency:* Specifies the default currency for displaying cryptocurrency data.
-
-d. *pageSizeOptions:* Defines the pagination options available for the application.
-
-e. *topCryptosNumber:* Determines the number of top cryptocurrencies displayed in the chart.
